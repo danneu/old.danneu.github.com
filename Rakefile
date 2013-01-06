@@ -20,6 +20,13 @@ task :deploy, :message do |t, args|
 end
 
 desc ""
-task :build_master do 
+task :deploy_from_source_branch do 
   Rake::Task[:build].invoke
+  system "git checkout master"
+  system "git rm -qr ."
+  system "cp -r _site/. ."
+  system "rm -r _site"
+  system "git add -A"
+  system "git commit -m '#{message}'"
+  system "git push origin master"
 end
