@@ -20,7 +20,11 @@ task :deploy, :message do |t, args|
 end
 
 desc ""
-task :deploy_from_source_branch do 
+task :builddeploy, :message do |t, args|
+  message = args[:message]
+  branch = config["git"]["branch"]
+  raise "Specify commit message." if message.nil? or message.empty?
+  raise "Specify config['git']['branch']" if branch.nil? or branch.empty?
   Rake::Task[:build].invoke
   system "git checkout master"
   system "git rm -qr ."
