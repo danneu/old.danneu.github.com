@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Scraping a blog with Anemone (Ruby web crawler) and MongoDB"
+permalink: "posts/8-scraping-a-blog-with-anemone-ruby-web-crawler-and-mongodb"
 ---
 
 I saw a [post on HN][HN] demonstrating how to scrape a blog with Scrapy (Python web crawler) and MongoDB. Interested in seeing what kind of Ruby crawlers were out there, I found [Anemone][anemone] and decided to replicate the functionality.

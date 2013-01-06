@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Meteor tutorial for fellow noobs: Adding features to the Leaderboard demo"
+permalink: "posts/6-meteor-tutorial-for-fellow-noobs-adding-features-to-the-leaderboard-demo"
 ---
 
 [Meteor][meteor] is a javascript framework that just launched. Its screencasts demonstrate effortless real-time applications and I don't possess the technical understanding to explain it more technically that using adjectives like "real-time". But it's X-treme and the allure of it being so new and so instantly popular encouraged me to give it a go.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Setting up Mocha testing with Coffeescript, Node.js, and a Cakefile"
+permalink: "posts/14-setting-up-mocha-testing-with-coffeescript-node-js-and-a-cakefile"
 ---
 
 I'm still in a Javascript (well, Coffeescript) kick. In an attempt to be productive while I train with great discipline, I decided to port Paul Dix's [Domainatrix][dixhub] Ruby gem into a Node module.

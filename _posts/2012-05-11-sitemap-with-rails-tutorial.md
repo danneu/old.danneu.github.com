@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Generating and submitting a sitemap.xml with Rails"
+permalink: "posts/13-generating-and-submitting-a-sitemap-xml-with-rails"
 ---
 
 You can see this blog's sitemap at [danneu.com/sitemap.xml](http://danneu.com/sitemap.xml). Any time a post is created, it updates the sitemap.
