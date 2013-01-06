@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Scraping a blog with Anemone (Ruby web crawler) and MongoDB</title>
+    <link rel="stylesheet" href="/css/skeleton/base.css" />
+    <link rel="stylesheet" href="/css/skeleton/layout.css" />
+    <link rel="stylesheet" href="/css/skeleton/skeleton.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/pygments.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+          <a href="/" class="logo">
+            <div class="back">&larr;</div>
+            <h1>danneu</h1>
+          </a> &mdash;
+          <ul>
+            <li><a href="/about-me">about me</a></li> &mdash;
+            <li><a href="/projects">projects</a></li>
+          </ul>
+      </div>
+      <h1>Scraping a blog with Anemone (Ruby web crawler) and MongoDB</h1>
+
+<div class="post-meta row">
+  <div class="eight columns alpha post-author">
+    by <a href="/about-me">Dan</a>
+  </div>
+  <div class="eight columns omega post-date">
+    24 Apr 2012
+  </div>
+</div>
+
+<div class="post-content">
+  <p>I saw a <a href="http://news.ycombinator.com/item?id=3878605">post on HN</a> demonstrating how to scrape a blog with Scrapy (Python web crawler) and MongoDB. Interested in seeing what kind of Ruby crawlers were out there, I found <a href="http://anemone.rubyforge.org/information-and-examples.html">Anemone</a> and decided to replicate the functionality.</p>
+
+<p>The crawler is going to: </p>
+
+<ul>
+<li>Start at the blog root URL: http://bullsh.it</li>
+<li>Only crawl page links (&quot;/page/4&quot;) and blog post links (&quot;/2012/04/this-is-a-title&quot;)</li>
+<li>Store blog post titles and tags into a MongoDB collection</li>
+<li>Give you confidence spelling the word &quot;anemone&quot;</li>
+</ul>
+
+<h3>Intro to Anemone</h3>
+
+<p>Anemone is a really simple DSL for crawling that even includes useful helpers like <code>page.to_absolute(link)</code> that turns <code>/foo</code> into <code>http://bullsh.it/foo</code>.</p>
+
+<ul>
+<li>Website: <a href="http://anemone.rubyforge.org/index.html">http://anemone.rubyforge.org/index.html</a></li>
+<li>RDocs: <a href="http://anemone.rubyforge.org/doc/index.html">http://anemone.rubyforge.org/doc/index.html</a></li>
+<li>Github: <a href="https://github.com/chriskite/anemone">https://github.com/chriskite/anemone</a></li>
+</ul>
+
+<p>Here&#39;s the Anemone loop with all the included class options:</p>
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;anemone&#39;</span>
+
+<span class="no">Anemone</span><span class="o">.</span><span class="n">crawl</span><span class="p">(</span><span class="s2">&quot;http://isbullsh.it&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">anemone</span><span class="o">|</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">skip_links_like</span> <span class="sr">/PATTERN/</span>
+
+  <span class="c1"># Filter a page&#39;s links down to only those you want to crawl</span>
+  <span class="n">anemone</span><span class="o">.</span><span class="n">focus_crawl</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">links</span> <span class="c1">#=&gt; Array of links</span>
+  <span class="k">end</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">on_pages_like</span><span class="p">(</span><span class="sr">/PATTERN/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+  <span class="k">end</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">on_every_page</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+  <span class="k">end</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">after_crawl</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<h3>Filtering the crawl</h3>
+
+<p>I have an explicit pattern of URLs I want to crawl.</p>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Patterns</span>
+<span class="no">POST_WITHOUT_SLASH</span>  <span class="o">=</span> <span class="sr">%r[\d{4}\/\d{2}\/[^\/]+$]</span>   <span class="c1"># http://isbullsh.it/2012/04/here-is-a-title  (301 redirects to slash)</span>
+<span class="no">POST_WITH_SLASH</span>     <span class="o">=</span> <span class="sr">%r[\d{4}\/\d{2}\/[\w-]+\/$]</span> <span class="c1"># http://isbullsh.it/2012/04/here-is-a-title/</span>
+<span class="no">ANY_POST</span>            <span class="o">=</span> <span class="no">Regexp</span><span class="o">.</span><span class="n">union</span> <span class="no">POST_WITHOUT_SLASH</span><span class="p">,</span> <span class="no">POST_WITH_SLASH</span> 
+<span class="no">ANY_PAGE</span>            <span class="o">=</span> <span class="sr">%r[page\/\d+]</span>               <span class="c1"># http://isbullsh.it/page/4 </span>
+<span class="no">ANY_PATTERN</span>         <span class="o">=</span> <span class="no">Regexp</span><span class="o">.</span><span class="n">union</span> <span class="no">ANY_PAGE</span><span class="p">,</span> <span class="no">ANY_POST</span>
+</code></pre></div>
+<p>I notice that the blog&#39;s links on a page never end in a trailing slash except on the actual blog post. Links without a trailing slash are 301 redirected to their with-slash version. I avoid crawling links that end in a hash <code>/#...</code> since they just jump around the same page.</p>
+
+<p><code>Regexp.union /pattern1/, /pattern2/, /pattern3/, ...</code> is great for merging a bunch of expressions together and seeing if any of them match on the target.</p>
+<div class="highlight"><pre><code class="ruby"><span class="n">anemone</span><span class="o">.</span><span class="n">focus_crawl</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span> 
+  <span class="n">page</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">keep_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">link</span><span class="o">|</span> <span class="n">link</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="no">ANY_PATTERN</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We want Anemone to follow any page or blog post link.</p>
+
+<h3>Scraping the goods</h3>
+
+<p>Anemone is built on top of Nokogiri and provides a <code>page</code> object wrapped in Anemone helpers with a doc wrapped with Nokogiri.</p>
+<div class="highlight"><pre><code class="ruby"><span class="n">anemone</span><span class="o">.</span><span class="n">on_pages_like</span><span class="p">(</span><span class="no">POST_WITH_SLASH</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">at_xpath</span><span class="p">(</span><span class="s2">&quot;//div[@role=&#39;main&#39;]/header/h1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="k">rescue</span> <span class="kp">nil</span>
+  <span class="n">tag</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">at_xpath</span><span class="p">(</span><span class="s2">&quot;//header/div[@class=&#39;post-data&#39;]/p/a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="k">rescue</span> <span class="kp">nil</span>
+
+  <span class="k">if</span> <span class="n">title</span> <span class="ow">and</span> <span class="n">tag</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Found Title: </span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2">, Tag: </span><span class="si">#{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<ul>
+<li>I specify only <code>POST_WITH_SLASH</code> so when Anemone follows a redirect on the slash-less URL, Anemone doesn&#39;t even both examining the 301 Redirect markup.</li>
+<li><code>rescue nil</code> for when xpath fails. That&#39;ll do.</li>
+<li>Simple validation on the presence of title and tag.</li>
+</ul>
+
+<p>We&#39;re ready to set up some storage to save our lucrative information!</p>
+
+<h3>Hooking up MongoDB</h3>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>sudo apt-get install mongodb
+</code></pre></div><div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;mongo&#39;</span>
+
+<span class="c1"># MongoDB</span>
+<span class="n">db</span> <span class="o">=</span> <span class="ss">Mongo</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">db</span><span class="p">(</span><span class="s2">&quot;scraped&quot;</span><span class="p">)</span>
+<span class="n">posts_collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">[</span><span class="s2">&quot;posts&quot;</span><span class="o">]</span>
+</code></pre></div>
+<ul>
+<li>Place the setup outside of the crawler loop, of course.</li>
+<li>Mongo::Connection.new will connect to localhost by default</li>
+<li>db(&quot;scraped&quot;) specifies a database to use. If it doesn&#39;t exist, it&#39;ll create it.</li>
+<li>db[&quot;posts&quot;] aka db.collection(&quot;posts&quot;) returns a collection that you can think of as the table.</li>
+</ul>
+
+<h3>Storing our goods into MongoDB</h3>
+
+<p>Inserting data into Mongo couldn&#39;t be easier.</p>
+<div class="highlight"><pre><code class="ruby"><span class="k">if</span> <span class="n">title</span> <span class="ow">and</span> <span class="n">tag</span>
+  <span class="n">post</span> <span class="o">=</span> <span class="p">{</span><span class="ss">title</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="ss">tag</span><span class="p">:</span> <span class="n">tag</span><span class="p">}</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Inserting </span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="n">posts_collection</span><span class="o">.</span><span class="n">insert</span> <span class="n">post</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>In the end it&#39;s just JSON.</p>
+
+<h3>Verify it works</h3>
+
+<p>Open up the Mongo console:</p>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>mongo
+&gt;&gt; use <span class="s2">&quot;scraped&quot;</span>
+&gt;&gt; db<span class="o">[</span><span class="s2">&quot;posts&quot;</span><span class="o">]</span>.find<span class="o">()</span>
+</code></pre></div>
+<p>Should return your results.</p>
+
+<h3>That&#39;s it</h3>
+
+<p>Here&#39;s the full working source:</p>
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;anemone&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;mongo&#39;</span>
+
+<span class="c1"># Patterns</span>
+<span class="no">POST_WITHOUT_SLASH</span>  <span class="o">=</span> <span class="sr">%r[\d{4}\/\d{2}\/[^\/]+$]</span>   <span class="c1"># http://isbullsh.it/2012/66/here-is-a-title  (301 redirects to slash)</span>
+<span class="no">POST_WITH_SLASH</span>     <span class="o">=</span> <span class="sr">%r[\d{4}\/\d{2}\/[\w-]+\/$]</span> <span class="c1"># http://isbullsh.it/2012/66/here-is-a-title/</span>
+<span class="no">ANY_POST</span>            <span class="o">=</span> <span class="no">Regexp</span><span class="o">.</span><span class="n">union</span> <span class="no">POST_WITHOUT_SLASH</span><span class="p">,</span> <span class="no">POST_WITH_SLASH</span> 
+<span class="no">ANY_PAGE</span>            <span class="o">=</span> <span class="sr">%r[page\/\d+]</span>               <span class="c1"># http://isbullsh.it/page/4 </span>
+<span class="no">ANY_PATTERN</span>         <span class="o">=</span> <span class="no">Regexp</span><span class="o">.</span><span class="n">union</span> <span class="no">ANY_PAGE</span><span class="p">,</span> <span class="no">ANY_POST</span>
+
+<span class="c1"># MongoDB</span>
+<span class="n">db</span> <span class="o">=</span> <span class="ss">Mongo</span><span class="p">:</span><span class="ss">:Connection</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">db</span><span class="p">(</span><span class="s2">&quot;scraped&quot;</span><span class="p">)</span>
+<span class="n">posts_collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">[</span><span class="s2">&quot;posts&quot;</span><span class="o">]</span>
+
+<span class="no">Anemone</span><span class="o">.</span><span class="n">crawl</span><span class="p">(</span><span class="s2">&quot;http://isbullsh.it&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">anemone</span><span class="o">|</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">focus_crawl</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span> 
+    <span class="n">page</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">keep_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">link</span><span class="o">|</span> <span class="n">link</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="no">ANY_PATTERN</span><span class="p">)</span> <span class="p">}</span> <span class="c1"># crawl only links that are pages or blog posts</span>
+  <span class="k">end</span>
+
+  <span class="n">anemone</span><span class="o">.</span><span class="n">on_pages_like</span><span class="p">(</span><span class="no">POST_WITH_SLASH</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">page</span><span class="o">|</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">at_xpath</span><span class="p">(</span><span class="s2">&quot;//div[@role=&#39;main&#39;]/header/h1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="k">rescue</span> <span class="kp">nil</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">at_xpath</span><span class="p">(</span><span class="s2">&quot;//header/div[@class=&#39;post-data&#39;]/p/a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="k">rescue</span> <span class="kp">nil</span>
+
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">and</span> <span class="n">tag</span>
+      <span class="n">post</span> <span class="o">=</span> <span class="p">{</span><span class="ss">title</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="ss">tag</span><span class="p">:</span> <span class="n">tag</span><span class="p">}</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Inserting </span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">posts_collection</span><span class="o">.</span><span class="n">insert</span> <span class="n">post</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Anemone has more lovin&#39; to give so check it out.</p>
+
+</div>
+ 
+    </body>
+  </div>
+</html>

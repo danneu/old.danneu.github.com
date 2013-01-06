@@ -1,0 +1,6 @@
+markdown: redcarpet
+pygments: true
+permalink: /posts/:title
+auto: true
+redcarpet:
+  extensions: [fenced_code_blocks, no_intra_emphasis]

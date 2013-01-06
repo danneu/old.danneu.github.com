@@ -1,0 +1,17 @@
+---
+layout: page
+title: "About Me"
+---
+
+I decided to finally claim my own personal nook of the internet. This blog is an effort to give back to the communities in which I've participated, at the very least. 
+
+* I'm Dan ([Email][email], [Github][github])
+* I live in Austin, Texas
+* Just graduated from [Univ of Texas][ut]. I also studied at [Univ of Economics, Prague][vse].
+* I enjoy Rails, Vim, Autodidacticism, Seneca, and Ricky Gervais' laugh.
+
+[email]: mailto:danrodneu@gmail.com
+[github]: https://github.com/danneu
+[ut]: http://www.utexas.edu/
+[vse]: http://en.wikipedia.org/wiki/University_of_Economics,_Prague
+[rails]: http://contributors.rubyonrails.org/contributors/dan-neumann/commits

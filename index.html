@@ -1,0 +1,17 @@
+---
+layout: layout
+title: "danneu's blog"
+---
+
+<div class="posts">
+  {% for post in site.posts %}
+  <div class="row">
+    <div class="thirteen columns alpha">
+      <a class="" href="{{ post.url }}">{{ post.title }}</a></td>
+    </div>
+    <div class="three columns omega">
+      {{ post.date | date: "%d %b %Y" }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
