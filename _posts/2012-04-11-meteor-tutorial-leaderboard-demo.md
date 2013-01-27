@@ -207,7 +207,7 @@ Object { }
 
 That's pretty much it, but here's the [Session API doc][session].
 
-Let's address the aforementioned `{{error}}` issue and expose a matching
+Let's address the aforementioned `{error}` issue and expose a matching
 Template variable:
 
 ~~~ javascript
@@ -217,21 +217,14 @@ Template.new_player.error = function () {
 };
 ~~~
 
-`{{error}}` in the template html expects an `error()` function and we'll
-just return the Session variable. If it's `undefined`, the `{{#if error}}`
+`{error}` in the template html expects an `error()` function and we'll
+just return the Session variable. If it's `undefined`, the `{#if error}`
 check fails.
 
 ## Using a Validation object
 
-I may have no substantial background in coding, but I'm civilized enough to
-feel dirty typing 100% sequential soup with a bunch of random utility
-methods in a global scope. I like the idea of objects and
-wrappers and organization. But since I'm learning, I don't really know how to
- approach these issues very sensibly.
-
-I gave it a shot, though. After a brief Google tour of javascript syntax, I
-decided to use an object literal because it felt like a class with class
-methods.
+After a brief Google tour of javascript syntax, I
+decided to use an object literal to organize our validation logic.
 
 Here's the primitive API I came up with:
 
@@ -243,10 +236,9 @@ Here's the primitive API I came up with:
 * `Validation.player_exists(name)` returns `true` or `false` and actually queries the
  collection to see if the name already exists.
 
-I clearly didn't spend much time on the design and it probably breaks every
-good practice, but it does the job and helps me sleep at night knowing that my
-growing armada of helper functions are at least sitting behind an arbitrary
-object variable.
+I clearly didn't spend much time on the design, but it does the job and helps 
+me sleep at night knowing that my growing armada of helper functions are at 
+least sitting behind an arbitrary object variable.
 
 Here's the `Validation` object in full ensemble:
 
