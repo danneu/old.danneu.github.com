@@ -223,28 +223,21 @@ Reactivity section.</li>
 </code></pre></div>
 <p>That&#39;s pretty much it, but here&#39;s the <a href="http://docs.meteor.com/#session">Session API doc</a>.</p>
 
-<p>Let&#39;s address the aforementioned `` issue and expose a matching
+<p>Let&#39;s address the aforementioned <code>{error}</code> issue and expose a matching
 Template variable:</p>
 <div class="highlight"><pre><code class="javascript"><span class="c1">// leaderboard.js</span>
 <span class="nx">Template</span><span class="p">.</span><span class="nx">new_player</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">Session</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">);</span>
 <span class="p">};</span>
 </code></pre></div>
-<p><code>in the template html expects an `error()` function and we&#39;ll
-just return the Session variable. If it&#39;s `undefined`, the</code>
+<p><code>{error}</code> in the template html expects an <code>error()</code> function and we&#39;ll
+just return the Session variable. If it&#39;s <code>undefined</code>, the <code>{#if error}</code>
 check fails.</p>
 
 <h2>Using a Validation object</h2>
 
-<p>I may have no substantial background in coding, but I&#39;m civilized enough to
-feel dirty typing 100% sequential soup with a bunch of random utility
-methods in a global scope. I like the idea of objects and
-wrappers and organization. But since I&#39;m learning, I don&#39;t really know how to
- approach these issues very sensibly.</p>
-
-<p>I gave it a shot, though. After a brief Google tour of javascript syntax, I
-decided to use an object literal because it felt like a class with class
-methods.</p>
+<p>After a brief Google tour of javascript syntax, I
+decided to use an object literal to organize our validation logic.</p>
 
 <p>Here&#39;s the primitive API I came up with:</p>
 
@@ -258,10 +251,9 @@ folks.</li>
 collection to see if the name already exists.</li>
 </ul>
 
-<p>I clearly didn&#39;t spend much time on the design and it probably breaks every
-good practice, but it does the job and helps me sleep at night knowing that my
-growing armada of helper functions are at least sitting behind an arbitrary
-object variable.</p>
+<p>I clearly didn&#39;t spend much time on the design, but it does the job and helps 
+me sleep at night knowing that my growing armada of helper functions are at 
+least sitting behind an arbitrary object variable.</p>
 
 <p>Here&#39;s the <code>Validation</code> object in full ensemble:</p>
 <div class="highlight"><pre><code class="javascript"><span class="c1">// leaderboard.js</span>
