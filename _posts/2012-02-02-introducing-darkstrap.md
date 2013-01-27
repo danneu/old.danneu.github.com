@@ -4,7 +4,7 @@ title: "Darkstrap.css: A Dark Theme for Twitter Bootstrap 2"
 permalink: "posts/4-darkstrap-css-a-dark-theme-for-twitter-bootstrap-2"
 ---
 
-**Update (5th Jan 2012):** I'm about to release Darkstrap v2.0 which is compatible with the latest Twitter Bootstrap. See more on the [project's README](https://github.com/danneu/darkstrap). 
+**Update (27th Jan 2013):** I'm about to release Darkstrap v2.0 which is compatible with the latest Twitter Bootstrap. See more on the [project's README](https://github.com/danneu/darkstrap). 
 
 I'm first ironing out some cross-browser issues.
 
@@ -33,9 +33,10 @@ I took a lot of the look directly from Compass.
 [otto]: http://twitter.com/mdo
 [thorton]: http://twitter.com/fat
 [bootstrap]: http://markdotto.com/bs2/docs/index.html
-[comparison]: /images/darkstrap/comparison.png "Bootstrap Vanilla vs Darkstrap"
+[comparison]: /bag/darkstrap/images/comparison.png "Bootstrap Vanilla vs Darkstrap"
 [github]: https://github.com/danneu/darkstrap
 [css]: https://raw.github.com/danneu/darkstrap/master/stylesheets/darkstrap.css
-[dark-demo]: /darkstrap/darkstrap.html
-[vanilla-demo]: /darkstrap/bootstrap.html
+[legacycss]: /bag/darkstrap/darkstrap_legacy.css
+[dark-demo]: /bag/darkstrap/legacy/darkstrap.html
+[vanilla-demo]: /bag/darkstrap/legacy/bootstrap.html
 [swatch]: http://bootswatch.com/ 

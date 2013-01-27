@@ -26,7 +26,7 @@ a {
 
 body { 
   font-family: "Georgia", "Times New Roman", serif;
-  font-size: 1em;
+  font-size: 18px;
   margin: 50px auto;
 }
 .header {
@@ -94,7 +94,7 @@ ul {
   list-style: disc;
 }
 .post-content {
-  font-size: 1.35em;
+  font-size: 18px;
   line-height: 1.6em;
 }
 .post-content li {
@@ -117,7 +117,8 @@ pre code {
   padding: 0.5em;
   margin-bottom: 20px;
   overflow: auto;
-  font-size: 0.61em;
+  //font-size: 0.61em;
+  font-size: 16px;
   line-height: 1.3em;
   border: 1px solid #3a7d8e;
   border: 1px solid #686868;
