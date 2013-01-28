@@ -4,9 +4,12 @@ title: "Darkstrap.css: A Dark Theme for Twitter Bootstrap 2"
 permalink: "posts/4-darkstrap-css-a-dark-theme-for-twitter-bootstrap-2"
 ---
 
-**Update (27th Jan 2013):** I'm about to release Darkstrap v2.0 which is compatible with the latest Twitter Bootstrap. See more on the [project's README](https://github.com/danneu/darkstrap). 
+**Update (27th Jan 2013):** Darkstrap v2.0.0 released. Compatible with Twitter Bootstrap v2.2.2.
 
-I'm first ironing out some cross-browser issues.
+* New [Darkstrap vs. Bootstrap demo][demo].
+* More info on the [Github page][github].
+
+I'm still ironing out some cross-browser issues (but it's still better than the original darkstrap.css).
 
 ----
 
@@ -20,23 +23,30 @@ I'm working on a project that demands a darker theme, so I made `darkstrap.css` 
 
 Simple as.
 
-* [Live demo][dark-demo] vs [Bootstrap demo][vanilla-demo]
-* Download [darkstrap.css][css]
-* Darkstrap on [Github][github]
+# Check it out
 
-## Comparison
+* Demo: [Darkstrap vs. Bootstrap][demo]
+* Download [darkstrap.css][css]
+* Darkstrap on [Github][github] 
 
 ![Comparison of Bootstrap and Darkstrap colors][comparison]
 
-I took a lot of the look directly from Compass.
+# Legacy Darkstrap
+
+I preserved the original darkstrap.css if anybody needs it for whatever reason.
+
+* [Original demo][dark-demo]
+* [Original darkstrap.css file][legacycss]
 
 [otto]: http://twitter.com/mdo
 [thorton]: http://twitter.com/fat
-[bootstrap]: http://markdotto.com/bs2/docs/index.html
+[bootstrap]: http://twitter.github.com/bootstrap/
 [comparison]: /bag/darkstrap/images/comparison.png "Bootstrap Vanilla vs Darkstrap"
 [github]: https://github.com/danneu/darkstrap
 [css]: https://raw.github.com/danneu/darkstrap/master/stylesheets/darkstrap.css
-[legacycss]: /bag/darkstrap/darkstrap_legacy.css
+[legacycss]: /bag/darkstrap/legacy/stylesheets/darkstrap.css
 [dark-demo]: /bag/darkstrap/legacy/darkstrap.html
 [vanilla-demo]: /bag/darkstrap/legacy/bootstrap.html
 [swatch]: http://bootswatch.com/ 
+[demo]: /bag/darkstrap/darkstrap.html
+[github]: https://github.com/danneu/darkstrap 
