@@ -19,7 +19,7 @@ task :deploy, :message do |t, args|
   system "git push origin #{branch}"
 end
 
-desc ""
+desc "Build and deploy site. (Run from source branch)"
 task :builddeploy, :message do |t, args|
   message = args[:message]
   branch = config["git"]["branch"]
