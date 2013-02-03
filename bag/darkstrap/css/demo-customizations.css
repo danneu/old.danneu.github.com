@@ -10,3 +10,11 @@ form.well,
 
 .ds-margin-top, h2 {
   margin-top: 50px; }
+
+.popovers .popover {
+  display: block;
+  float: left;
+  margin: 20px;
+  position: relative;
+  width: 260px;
+}

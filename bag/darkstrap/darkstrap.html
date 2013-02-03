@@ -46,7 +46,7 @@
     </ul>
 
     <div class="hero-unit">
-      <h1>Darkstrap <small>v0.9.1</small></h1>
+      <h1>Darkstrap</h1>
       <p>Made by <a href="http://danneu.com">danneu</a></p>
       <p>A dark theme for Twitter Bootstrap.</p>
     </div>
@@ -2453,6 +2453,79 @@
   </div>
 
 
+  <!--Anchor javascript-->
+  <a id="anchor-javascript"></a><br /><br /><br />
+
+  <h2>Modals</h2>
+
+  <!--<div class="modal hide fade">-->
+  <div style="position: relative;">
+    <div class="modal" style="position: relative; margin: 0 auto; top: auto; left: auto; right: auto; z-index: 1;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Modal header</h3>
+      </div>
+      <div class="modal-body">
+        <p>One fine body...</p>
+        <p>You should be able to but whatever you want in here. Like</p>
+        <a class='btn btn-danger' href='#'>Buttons</a>
+        and
+        <code>Code</code>
+        and
+        <a href="#" rel="tooltip" title="first tooltip" id="tooltip-example">things with tooltips</a>
+        and
+        <br />
+        <br />
+        <div class='well'>Radical wells<br /><br />
+          <div class='well'>within radical wells</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn">Close</a>
+        <a href="#" class="btn btn-primary">Save changes</a>
+      </div>
+    </div>
+  </div>
+
+  <h2>Popovers</h2>
+
+  <div class="well popovers clearfix">
+    <div class="popover top">
+      <div class="arrow"></div>
+      <h3 class="popover-title">Popover top</h3>
+      <div class="popover-content">
+        <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+      </div>
+    </div>
+
+    <div class="popover right">
+      <div class="arrow"></div>
+      <h3 class="popover-title">Popover right</h3>
+      <div class="popover-content">
+        <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+      </div>
+    </div>
+
+    <div class="popover bottom">
+      <div class="arrow"></div>
+      <h3 class="popover-title">Popover bottom</h3>
+      <div class="popover-content">
+        <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+      </div>
+    </div>
+
+    <div class="popover left">
+      <div class="arrow"></div>
+      <h3 class="popover-title">Popover left</h3>
+      <div class="popover-content">
+        <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <p>Darkstrap on <a href="http://github.com/danneu/darkstrap">Github</a></p>
 
   </div> <!-- /container -->
   <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -2466,7 +2539,7 @@
         $link = $("link#darkstrap-link");
         var href = $link.attr("href")
         var css_url = 
-          href.length > 0 ?  "" : "css/darkstrap-v0.9.0.css"
+          href.length > 0 ?  "" : "css/darkstrap.css"
         $link.attr("href", css_url);
 
         // Toggle button text
@@ -2475,6 +2548,19 @@
           "Toggle Bootstrap" : "Toggle Darkstrap";
         $this.text(text);
       });
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(function () {
+      $("#tooltip-example").tooltip();
+    });
+  </script>
+
+
+  <script type="text/javascript">
+    $(function () {
+      $("#myCarousel").carousel();
     });
   </script>
 </body>
