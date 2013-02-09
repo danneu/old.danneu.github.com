@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>XML Parsing Benchmark: Ox vs Nokogiri (SAX vs DOM traversal) </title>
+    <link rel="stylesheet" href="/css/skeleton/base.css" />
+    <link rel="stylesheet" href="/css/skeleton/layout.css" />
+    <link rel="stylesheet" href="/css/skeleton/skeleton.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/pygments.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+          <a href="/" class="logo">
+            <div class="back">&larr;</div>
+            <h1>danneu</h1>
+          </a> &mdash;
+          <ul>
+            <li><a href="/about-me">about me</a></li> &mdash;
+            <li><a href="/projects">projects</a></li>
+          </ul>
+      </div>
+      <h1>XML Parsing Benchmark: Ox vs Nokogiri (SAX vs DOM traversal) </h1>
+
+<div class="post-meta row">
+  <div class="eight columns alpha post-author">
+    by <a href="/about-me">Dan</a>
+  </div>
+  <div class="eight columns omega post-date">
+    30 Oct 2012
+  </div>
+</div>
+
+<div class="post-content">
+  <p>I was trying to parse a 7 GB XML file with the only tool I was used to at that point: Nokogiri DOM traversal.</p>
+
+<p>...Not gonna happen. After a google search, I came across this <a href="http://www.ohler.com/dev/xml_with_ruby/xml_with_ruby.html">Ox vs Nokogiri speed comparison</a> which also introduced me to SAX parsing.</p>
+
+<h1>Task</h1>
+
+<ul>
+<li>Parse an 80mb XML file with 2,600,000 totalnodes (38k parent nodes, 68 nodes per parent) .</li>
+<li>For each user <code>&lt;row&gt;</code>, build a <code>@user</code> hash out of 3 specific child nodes and then print it to screen.</li>
+</ul>
+
+<h1>Results:</h1>
+
+<p>Here&#39;s the test: <a href="https://gist.github.com/3977120">https://gist.github.com/3977120</a></p>
+<div class="highlight"><pre><code class="text">Ox DOM: 6 seconds (550mb)
+Ox SAX: 6 seconds (12mb)
+Nokogiri DOM: 13 seconds (900mb)
+Nokogiri SAX: 24 seconds (11.8mb)
+</code></pre></div>
+<p>FWIW: My Ox SAX script parsed the original 7 GB file with 127,500,000 totalnodes in 7min, 49sec. I wasn&#39;t even going to try either of the DOM scripts and the Noko SAX script hangs up early on at about the 8,000,000th node despite the CPU staying at 100% until I quit. So there might be a problem with my Noko SAX script.</p>
+
+<h1>Takeaways:</h1>
+
+<ul>
+<li>Walking Ox&#39;s DOM tree is manual enough to where you might as well use its less-nebulous SAX API, but I did my best to include it by looking at its tests.</li>
+<li>It&#39;s crazy how a 80mb XML structure bloats up to 550mb and 900mb in memory once its parsed into a bunch of Ox::Element and Nokogiri::Element objects.</li>
+<li>It&#39;s pretty awesome parsing unlimited XML data with nothing more than 12mb of RAM.</li>
+<li>Ox&#39;s SAX API is better than Nokogiri&#39;s because Ox&#39;s method for extracting the value from a node is nicer. Nokogiri just calls a characters(string) method on node contents and it even includes the newlines and tab characters of the XML doc which you have to strip out.</li>
+<li>Noko leans on libxml, Ox rolls its own C extension.</li>
+<li>If you ever really needed to parse a massive XML file and its data could be mapped to a DB in any way, just COPY command that shit into Postgres in 10 seconds or something, no joke.</li>
+</ul>
+
+<h1>SAX vs DOM traversal?</h1>
+
+<p>The most common way to parse an XML/HTML file is to build it into a Document Object Model (DOM) structure in memory. Nokogiri and Ox wrap each node in a <code>Nokogiri::Element</code> or <code>Ox::Element</code> Ruby object that contain metadata like the node&#39;s parent node and all of its child nodes. The browser builds up a DOM structure every time it parses an HTML document. </p>
+
+<p>It&#39;s slow and bulky. It&#39;s why an 80mb file can expand to 550mb (Ox) and 900mb (Nokogiri).</p>
+
+<p>On the other hand, SAX parsing just reads sequentially through the document and fires events for things like entering a node, exiting a node, encountering attributes, and encountering node data. It doesn&#39;t keep it in memory. It&#39;s up to you to hook into these callbacks and do something with it.</p>
+
+<p>It&#39;s why SAX parsing a 80mb or 7,000mb XML document only demands a constant 12mb of memory. It&#39;s glorious.</p>
+
+</div>
+ 
+    </body>
+  </div>
+</html>
