@@ -35,27 +35,25 @@
 <div class="post-content">
   <h2>What&#39;s Discourse?</h2>
 
-<p>Jeff Atwood, co-founder of <a href="http://stackoverflow.com">StackOverflow</a>, recently released the beta of <a href="http://discourse.org">Discourse</a>, a forum system that hopes to become the Wordpress of forum software.</p>
+<p>Jeff Atwood, co-founder of <a href="http://stackoverflow.com">StackOverflow</a>, recently released the beta of <a href="http://discourse.org">Discourse</a>, a forum system that hopes to become the Wordpress of forum software. </p>
 
 <p>I&#39;ve been running a large vBulletin forum since 2007 and the very idea of migrating my community from legacy 2000-era forum software compelled my enough to teach myself Ruby and Rails.</p>
 
-<p>So I naturally was drawn to Discourse as an opportunity to revive my passion for online communities and hopefully contribute to its codebase.</p>
+<p>So I naturally was drawn to Discourse as an opportunity to revive my passion for online communities and hopefully contribute to its codebase is a way more substantial than fixing comment typos.</p>
 
-<p>Check it out: http://meta.discourse.org</p>
-
-<p>With that out of the way...</p>
+<p>Check it out: <a href="http://meta.discourse.org">http://meta.discourse.org</a></p>
 
 <h2>Making our first plugin</h2>
 
-<p>Discourse has a plugin system and it ships with a few plugins. While I haven&#39;t explored it in depth, I made a bare-bones Hello World plugin to see what the bare minimum entailed.</p>
+<p>Discourse has a plugin system and it ships with a few plugins. I made a bare-bones Hello World plugin to see what the bare minimum entailed.</p>
 
-<p>So now I&#39;m sharing that with you in an effort to force myself to explore the plugin system.</p>
+<p>So now I&#39;m sharing that with you. I don&#39;t dive very deep, but it&#39;s a quick superficial crash course.</p>
 
 <h2>What our plugin will do</h2>
 
 <p>We&#39;ll be making a plugin called <strong>DiscoursePervasiveBanner</strong>.</p>
 
-<p>All it does is invade the space of your users by announcing its presence at the top of every page of the Discourse site.</p>
+<p>All it does is pester your users by announcing its presence at the top of every page of the Discourse site.</p>
 
 <p><img src="http://dl.dropbox.com/u/51836583/Screenshots/dp.png" alt="screenshot"></p>
 
@@ -64,8 +62,8 @@
 <p>We&#39;ll do this by introducing two files to the Rails asset pipeline via the plugin system:</p>
 
 <ul>
-<li>discourse_pervasive_banner.js: Adds our banner <code>&lt;div&gt;</code> to the top of the page.</li>
-<li>discourse_pervasive_banner.css: Styles our banner. Makes it glorious.</li>
+<li><strong>discourse_pervasive_banner.js</strong>: Adds our banner <code>&lt;div&gt;</code> to the top of the page.</li>
+<li><strong>discourse_pervasive_banner.css</strong>: Styles our banner. Makes it glorious.</li>
 </ul>
 
 <h2>What plugins are</h2>
@@ -87,7 +85,7 @@
 </code></pre></div>
 <p>The <code>discourse_plugin</code> plugin is what plugins descend from. It implements the behavior that will actually interact with Discourse&#39;s <code>DiscoursePluginRegistry</code>.</p>
 
-<p>They could easily be released on RubyGems and removed from the vendor/ directory, but plugin development is much easier when you can make a change and refresh the browser.</p>
+<p>They could easily be released on RubyGems and removed from the vendor/ directory, but we&#39;ll start here.</p>
 
 <h2>How plugins work</h2>
 
@@ -97,7 +95,7 @@
 <div class="highlight"><pre><code class="ruby"><span class="c1"># app/assets/javascripts/application.js.erb</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 <span class="o">&lt;%</span>
-  <span class="c1"># Include javascripts</span>
+  <span class="c1"># Include plugin javascripts</span>
   <span class="no">DiscoursePluginRegistry</span><span class="o">.</span><span class="n">javascripts</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">js</span><span class="o">|</span>
     <span class="n">require_asset</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
   <span class="k">end</span> 
@@ -105,6 +103,7 @@
 </code></pre></div><div class="highlight"><pre><code class="ruby"><span class="c1"># app/assets/stylesheets/application.css.erb</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 <span class="o">&lt;%</span>
+  <span class="c1"># Include plugin stylesheets </span>
   <span class="no">DiscoursePluginRegistry</span><span class="o">.</span><span class="n">stylesheets</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">css</span><span class="o">|</span>
     <span class="n">require_asset</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
   <span class="k">end</span>
@@ -119,7 +118,7 @@
 <p><code>cd</code> into that directory and use Bundler to generate our plugin skeleton:</p>
 <div class="highlight"><pre><code class="text">bundle gem discourse_pervasive_banner 
 </code></pre></div>
-<p>View the commit: https://github.com/danneu/discourse_pervasive_banner/commit/fd566106d7ba76b6b5544324075db63db963089c</p>
+<p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/fd566106d7ba76b6b5544324075db63db963089c">View the commit</a>)</p>
 
 <h3>What the skeleton looks like</h3>
 <div class="highlight"><pre><code class="text">discourse_pervasive_banner
@@ -152,31 +151,25 @@
 </code></pre></div>
 <h2>2. Adding a Rails Engine (engine.rb)</h2>
 
-<p>Most of the following boilerplate was simply copied and modified from the <code>discourse_emoji</code> plugin.</p>
+<p>Most of the following boilerplate was modified from the existing <code>discourse_emoji</code> plugin. You can learn more by looking at Discourse&#39;s included plugins.</p>
 
-<p>The Engine is the only nonobvious part of the plugin.</p>
-
-<p>You can read more about them:</p>
+<p>This file creates an Engine for our plugin for the purpose of adding itself to the plugin registry during Rails&#39; <code>after_initialize</code> hook.</p>
 
 <ul>
 <li>Rails Guides: <a href="http://guides.rubyonrails.org/engines.html">Getting Started with Engines</a></li>
-</ul>
-
-<p>This file creates an Engine for our plugin for the purpose of adding itself to the plugin registry during Rails&#39; &quot;after_initialize&quot; hook.</p>
-
-<ul>
 <li>Rails Guides: <a href="http://guides.rubyonrails.org/configuring.html#initializers">Initializers</a></li>
 </ul>
 
 <p>Let&#39;s add <code>engine.rb</code>:</p>
-<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;pervasive_banner/plugin&#39;</span>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># lib/discourse_pervasive_banner/engine.rb</span>
+<span class="nb">require</span> <span class="s1">&#39;discourse_pervasive_banner/plugin&#39;</span>
 
-<span class="k">module</span> <span class="nn">PervasiveBanner</span>
+<span class="k">module</span> <span class="nn">DiscoursePervasiveBanner</span>
   <span class="k">class</span> <span class="nc">Engine</span> <span class="o">&lt;</span> <span class="ss">Rails</span><span class="p">:</span><span class="ss">:Engine</span>
 
-    <span class="n">engine_name</span> <span class="s1">&#39;pervasive_banner&#39;</span>
+    <span class="n">engine_name</span> <span class="s1">&#39;discourse_pervasive_banner&#39;</span>
 
-    <span class="n">initializer</span> <span class="s2">&quot;pervasive_banner.configure_rails_initialization&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+    <span class="n">initializer</span> <span class="s2">&quot;discourse_pervasive_banner.configure_rails_initialization&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
 
       <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">after_initialize</span> <span class="k">do</span> 
         <span class="no">DiscoursePluginRegistry</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="ss">DiscoursePervasiveBanner</span><span class="p">:</span><span class="ss">:Plugin</span><span class="p">)</span>
@@ -186,32 +179,37 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>All <code>DiscoursePluginRegistry.setup(DiscoursePervasiveBanner::Plugin)</code> does is instantiate the plugin with a registry instance and then run the plugin&#39;s own <code>#setup</code> method which registers assets with the registry</p>
-<div class="highlight"><pre><code class="ruby">  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">setup</span><span class="p">(</span><span class="n">plugin_class</span><span class="p">)</span>    
-    <span class="n">registry</span> <span class="o">=</span> <span class="no">DiscoursePluginRegistry</span><span class="o">.</span><span class="n">new</span>
-    <span class="n">plugin</span> <span class="o">=</span> <span class="n">plugin_class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
-    <span class="n">plugin</span><span class="o">.</span><span class="n">setup</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>Also, by creating an Engine, Rails will see our plugin&#39;s <code>vendor/</code> directory which is where we have our assets. That&#39;s how <code>DiscoursePluginRegistry</code> can just <code>require</code> them in the asset manifest loops without a File Not Found error.</p>
+<p>The line <code>DiscoursePluginRegistry.setup(DiscoursePervasiveBanner::Plugin)</code> instantiates our plugin with a registry instance and then runs the plugin&#39;s own <code>#setup</code> method which registers assets with the registry.</p>
 
-<p>View the commit: https://github.com/danneu/discourse_pervasive_banner/commit/75758a3c5fbfaa74e287d7a3e61a097a4bf04b65</p>
+<p>Here&#39;s how it&#39;s implemented behind the scenes:</p>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Inside DiscoursePluginRegistry  </span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">setup</span><span class="p">(</span><span class="n">plugin_class</span><span class="p">)</span>    
+  <span class="n">registry</span> <span class="o">=</span> <span class="no">DiscoursePluginRegistry</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">plugin</span> <span class="o">=</span> <span class="n">plugin_class</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
+  <span class="n">plugin</span><span class="o">.</span><span class="n">setup</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Also I&#39;m pretty sure that creating an Engine is what will enable Rails to see our plugin&#39;s <code>vendor/</code> directory which is where we have our assets. That&#39;s how <code>DiscoursePluginRegistry</code> can just <code>require</code> them in the asset manifest loops without a File Not Found error.</p>
+
+<p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/75758a3c5fbfaa74e287d7a3e61a097a4bf04b65">View the commit</a>)</p>
 
 <h2>3. Implementing our plugin&#39;s <code>#setup</code> method (plugin.rb)</h2>
 
 <p>Since Discourse plugins inherit from <code>DiscoursePlugin</code>, here are the implementations of the two method&#39;s we&#39;ll be using inside our subclasses plugin:</p>
-<div class="highlight"><pre><code class="ruby">  <span class="k">def</span> <span class="nf">register_js</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="p">{})</span>
-    <span class="vi">@registry</span><span class="o">.</span><span class="n">register_js</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Inside DiscoursePlugin::Plugin</span>
+<span class="k">def</span> <span class="nf">register_js</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="p">{})</span>
+  <span class="vi">@registry</span><span class="o">.</span><span class="n">register_js</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">register_css</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    <span class="vi">@registry</span><span class="o">.</span><span class="n">register_css</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-  <span class="k">end</span>
+<span class="k">def</span> <span class="nf">register_css</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+  <span class="vi">@registry</span><span class="o">.</span><span class="n">register_css</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>In other words, all our plugin does is delegate to the <code>DiscoursePluginRegistry</code> instance that&#39;s passed to it.</p>
+<p>In other words, all that our plugin does is delegate to the <code>DiscoursePluginRegistry</code> instance that&#39;s passed to it.</p>
 
 <p>Here&#39;s our <code>plugin.rb</code> file:</p>
-<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;discourse_plugin&#39;</span>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># lib/discourse_pervasive_banner/plugin.rb</span>
+<span class="nb">require</span> <span class="s1">&#39;discourse_plugin&#39;</span>
 
 <span class="k">module</span> <span class="nn">DiscoursePervasiveBanner</span>
 
@@ -226,24 +224,24 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>View the commit: https://github.com/danneu/discourse_pervasive_banner/commit/003214171df47e2c3196aa94d6ce4141aa54eb43</p>
+<p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/003214171df47e2c3196aa94d6ce4141aa54eb43">View the commit</a>)</p>
 
 <h2>4. Creating our pervasive banner with javascript</h2>
 
-<p>Our assets are required after Discourse&#39;s assets, so we can rely on jQuery existing.</p>
-<div class="highlight"><pre><code class="javascript"><span class="c1">// discourse_pervasive_banner/vendor/assets/javascripts/discourse_pervasive_banner.js</span>
+<p>Our assets are required after Discourse&#39;s assets, so we can rely on jQuery&#39;s existence.</p>
+<div class="highlight"><pre><code class="javascript"><span class="c1">// vendor/assets/javascripts/discourse_pervasive_banner.js</span>
 <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">).</span><span class="nx">prepend</span><span class="p">(</span><span class="s2">&quot;&lt;div id=&#39;pervasive-banner&#39;&gt;Pervasive banner pervading your space!&lt;/div&gt;&quot;</span><span class="p">);</span>
 <span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 </code></pre></div>
 <p>The <code>.call(this)</code> is a standard way for executing our javascript in the context of the code that calls it. </p>
 
-<p>View the commit: https://github.com/danneu/discourse_pervasive_banner/commit/07bd45aab2a00adeebf57225c3de89b601d307b7</p>
+<p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/07bd45aab2a00adeebf57225c3de89b601d307b7">View the commit</a>)</p>
 
 <h2>5. Styling our pervasive banner with CSS</h2>
 
 <p>Note that we can use whatever processors available in the Discourse app since our files are required into the app&#39;s asset pipeline. We could&#39;ve written our javascript with coffeescript, and here we&#39;ll write our CSS with Sass.</p>
-<div class="highlight"><pre><code class="css"><span class="c">/* discourse_pervasive_banner/vendor/assets/stylesheets/discourse_pervasive_banner.css.sass */</span>
+<div class="highlight"><pre><code class="css"><span class="c">/* vendor/assets/stylesheets/discourse_pervasive_banner.css.sass */</span>
 <span class="nf">#pervasive-banner</span>
   <span class="nt">background</span><span class="o">:</span> <span class="nt">red</span>
   <span class="nt">height</span><span class="o">:</span> <span class="nt">100px</span>
@@ -251,15 +249,15 @@
   <span class="nt">text-align</span><span class="o">:</span> <span class="nt">center</span>
   <span class="nt">font-size</span><span class="o">:</span> <span class="nt">32px</span>
 </code></pre></div>
-<p>View the commit: https://github.com/danneu/discourse_pervasive_banner/commit/1dcbbaffed8f7cb53c28bf235ad0d1336aa8bb07</p>
+<p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/1dcbbaffed8f7cb53c28bf235ad0d1336aa8bb07">View the commit</a>)</p>
 
 <h2>6. Loading our plugin files</h2>
 
 <p>The files in our plugin&#39;s <code>lib/</code> directory aren&#39;t automatically loaded. By standard gem convention, we explicitly require them:</p>
 <div class="highlight"><pre><code class="ruby"><span class="c1"># lib/discourse_pervasive_banner.rb</span>
 <span class="nb">require</span> <span class="s2">&quot;pervasive_banner/version&quot;</span>
-<span class="nb">require</span> <span class="s2">&quot;pervasive_banner/engine&quot;</span>  <span class="c1"># &lt;-- added</span>
-<span class="nb">require</span> <span class="s2">&quot;pervasive_banner/plugin&quot;</span>  <span class="c1"># &lt;-- added</span>
+<span class="nb">require</span> <span class="s2">&quot;discourse_pervasive_banner/engine&quot;</span>  <span class="c1"># &lt;-- added</span>
+<span class="nb">require</span> <span class="s2">&quot;discourse_pervasive_banner/plugin&quot;</span>  <span class="c1"># &lt;-- added</span>
 
 <span class="k">module</span> <span class="nn">PervasiveBanner</span>
   <span class="c1"># Your code goes here...</span>
@@ -271,10 +269,10 @@
 
 <h2>7. Adding our plugin to the Discourse Gemfile</h2>
 
-<p>Now we need to actually tell Discourse about our plugin by adding it to the Gemfile.</p>
+<p>Now we need to actually tell Discourse about our plugin by adding it to the master Gemfile of the app we want to use our plugin.</p>
 <div class="highlight"><pre><code class="ruby"><span class="c1"># discourse/Gemfile</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-<span class="n">gem</span> <span class="s1">&#39;discourse_pervasive_banner&#39;</span><span class="p">,</span> <span class="ss">path</span><span class="p">:</span> <span class="s1">&#39;vendor/gems/pervasive_banner&#39;</span>
+<span class="n">gem</span> <span class="s1">&#39;discourse_pervasive_banner&#39;</span><span class="p">,</span> <span class="ss">path</span><span class="p">:</span> <span class="s1">&#39;vendor/gems/discourse_pervasive_banner&#39;</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 </code></pre></div>
 <p>We specify the path since our plugin only exists in the app&#39;s &#39;vendor/&#39; directory. But we obviously wouldn&#39;t need that if our plugin was released on RubyGems where it&#39;d be downloaded into the app.</p>
@@ -285,9 +283,34 @@
 <p>And you may need to:</p>
 <div class="highlight"><pre><code class="text">rake assets:precompile
 </code></pre></div>
-<h2>That&#39;s it! I don&#39;t have comments yet on my blog, but please <a href="danrodneu@gmail.com">email me</a> with questions/comments/corrections!</h2>
+<h2>That&#39;s it!</h2>
+
+<p>I don&#39;t have comments yet on my blog, but please <a href="mailto:danrodneu@gmail.com">email me</a> with questions/comments/corrections! </p>
+
+<p>Once again. For glory:</p>
 
 <p><img src="http://dl.dropbox.com/u/51836583/Screenshots/dp.png" alt="screenshot"></p>
+
+<p>You can find the full plugin source on Github: <a href="https://github.com/danneu/discourse_pervasive_banner">danneu/discourse_pervasive_banner</a></p>
+
+<script>
+var banner = document.createElement('div');
+banner.innerHTML = "Pervasive banner pervading your space!";
+banner.className = "pervasive-banner";
+document.body.insertBefore(banner, document.body.childNodes[0]);
+</script>
+
+<style>
+.pervasive-banner {
+  background: red;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  font-size: 32px;
+  color: black;
+  margin-top: -50px;
+}
+</style>
 
 </div>
  
