@@ -25,7 +25,7 @@ We'll be making a plugin called **DiscoursePervasiveBanner**.
 
 All it does is pester your users by announcing its presence at the top of every page of the Discourse site.
 
-![screenshot](http://dl.dropbox.com/u/51836583/Screenshots/dp.png)
+![screenshot][screenshot]
 
 Mmm. Glorious.
 
@@ -292,7 +292,7 @@ I don't have comments yet on my blog, but please [email me](mailto:danrodneu@gma
 
 Once again. For glory:
 
-![screenshot](http://dl.dropbox.com/u/51836583/Screenshots/dp.png)
+![screenshot][screenshot]
 
 You can find the full plugin source on Github: [danneu/discourse_pervasive_banner](https://github.com/danneu/discourse_pervasive_banner)
 
@@ -318,4 +318,5 @@ document.body.insertBefore(banner, document.body.childNodes[0]);
 
 [so]: http://stackoverflow.com
 [discourse]: http://discourse.org
+[screenshot]: /bag/discourse/images/pervasive_banner_screenshot.png "Pervasive Banner Screenshot"
 
