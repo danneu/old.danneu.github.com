@@ -206,7 +206,7 @@ $ tux
 >> p = new_record?
 true
 >> p.save
->> p = new_record?
+>> p.new_record?
 false
 >> Post.count
 4
@@ -252,7 +252,7 @@ Templates are embedded inside of layouts, and layouts give us a place to put the
 # views/layout.erb
 <html>
 <head>
-  <title><%= title =></title>
+  <title><%= title %></title>
   <% puts request.inspect %>
 </head>
 <body>
@@ -538,9 +538,10 @@ false
 {:title=>["can't be blank", "is too short (minimum is 3 characters)"], :body=>["can't be blank"]}
 >> p.save
 false
->> p.title = "I have a title now"
+>> p.title = "I have a title now!"
+>> p.body = "And I also have a body! Thanks!"
 >> p.valid?
-false
+true
 ~~~
 
 Verify on our New Post and Edit Post forms. If you try to save a post with incomplete data, it should drop you back on the form with your data still filled out.
@@ -548,10 +549,3 @@ Verify on our New Post and Edit Post forms. If you try to save a post with incom
 # That's it!
 
 Since I extracted this guide from a much longer more verbose guide, I may have cut too many corners. Email me at `danrodneu@gmail.com` if you have questions or comments.
-
-
-
-
-
-
-
