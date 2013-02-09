@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your first Discourse plugin tutorial"
+title: "Tutorial: Your first Discourse plugin"
 ---
 
 ## What's Discourse?
