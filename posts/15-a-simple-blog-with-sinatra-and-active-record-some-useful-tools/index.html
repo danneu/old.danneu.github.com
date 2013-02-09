@@ -209,7 +209,7 @@
 <span class="o">&gt;&gt;</span> <span class="nb">p</span> <span class="o">=</span> <span class="n">new_record?</span>
 <span class="kp">true</span>
 <span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">save</span>
-<span class="o">&gt;&gt;</span> <span class="nb">p</span> <span class="o">=</span> <span class="n">new_record?</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">new_record?</span>
 <span class="kp">false</span>
 <span class="o">&gt;&gt;</span> <span class="no">Post</span><span class="o">.</span><span class="n">count</span>
 <span class="mi">4</span>
@@ -248,8 +248,8 @@
 <div class="highlight"><pre><code class="erb"><span class="x"># views/layout.erb</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">&lt;head&gt;</span>
-<span class="x">  &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">title</span> <span class="o">=&gt;&lt;</span><span class="sr">/title&gt;</span>
-<span class="sr">  </span><span class="x">&lt;% puts request.inspect </span><span class="err">%&gt;</span><span class="x"></span>
+<span class="x">  &lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">title</span> <span class="cp">%&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">  </span><span class="cp">&lt;%</span> <span class="nb">puts</span> <span class="n">request</span><span class="o">.</span><span class="n">inspect</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">&lt;/head&gt;</span>
 <span class="x">&lt;body&gt;</span>
 <span class="x">  &lt;ul&gt;</span>
@@ -504,9 +504,10 @@ end
 <span class="p">{</span><span class="ss">:title</span><span class="o">=&gt;[</span><span class="s2">&quot;can&#39;t be blank&quot;</span><span class="p">,</span> <span class="s2">&quot;is too short (minimum is 3 characters)&quot;</span><span class="o">]</span><span class="p">,</span> <span class="ss">:body</span><span class="o">=&gt;[</span><span class="s2">&quot;can&#39;t be blank&quot;</span><span class="o">]</span><span class="p">}</span>
 <span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">save</span>
 <span class="kp">false</span>
-<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;I have a title now&quot;</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;I have a title now!&quot;</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;And I also have a body! Thanks!&quot;</span>
 <span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="o">.</span><span class="n">valid?</span>
-<span class="kp">false</span>
+<span class="kp">true</span>
 </code></pre></div>
 <p>Verify on our New Post and Edit Post forms. If you try to save a post with incomplete data, it should drop you back on the form with your data still filled out.</p>
 
