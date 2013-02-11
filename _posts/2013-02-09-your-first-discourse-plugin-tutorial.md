@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Tutorial: Your first Discourse plugin"
+comments: true
 ---
 
 ## What's Discourse?
