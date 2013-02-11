@@ -8,9 +8,9 @@ comments: true
 
 Jeff Atwood, co-founder of [StackOverflow][so], recently released the beta of [Discourse][discourse], a forum system that hopes to become the Wordpress of forum software. 
 
-I've been running a large vBulletin forum since 2007 and the very idea of migrating my community from legacy 2000-era forum software compelled my enough to teach myself Ruby and Rails.
+I've been running a large vBulletin forum since 2007 and the very idea of migrating my community from legacy 2000-era forum software compelled me enough to teach myself Ruby and Rails.
 
-So I naturally was drawn to Discourse as an opportunity to revive my passion for online communities and hopefully contribute to its codebase is a way more substantial than fixing comment typos.
+So I naturally was drawn to Discourse as an opportunity to revive my passion for online communities and hopefully contribute to its codebase in a way more substantial than fixing comment typos.
 
 Check it out: [http://meta.discourse.org](http://meta.discourse.org)
 
@@ -19,6 +19,8 @@ Check it out: [http://meta.discourse.org](http://meta.discourse.org)
 Discourse has a plugin system and it ships with a few plugins. I made a bare-bones Hello World plugin to see what the bare minimum entailed.
 
 So now I'm sharing that with you. I don't dive very deep, but it's a quick superficial crash course.
+
+I'll try to keep it up to date over time as the plugin API changess.
 
 ## What our plugin will do
 
