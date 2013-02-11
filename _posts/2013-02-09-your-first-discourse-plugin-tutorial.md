@@ -20,7 +20,7 @@ Discourse has a plugin system and it ships with a few plugins. I made a bare-bon
 
 So now I'm sharing that with you. I don't dive very deep, but it's a quick superficial crash course.
 
-I'll try to keep it up to date over time as the plugin API changess.
+I'll try to keep it up to date over time as the plugin API changes.
 
 ## What our plugin will do
 
