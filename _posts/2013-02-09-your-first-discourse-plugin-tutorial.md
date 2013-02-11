@@ -289,13 +289,8 @@ And you may need to:
 
 ## That's it! 
 
-I don't have comments yet on my blog, but please [email me](mailto:danrodneu@gmail.com) with questions/comments/corrections! 
-
-Once again. For glory:
-
-![screenshot][screenshot]
-
-You can find the full plugin source on Github: [danneu/discourse_pervasive_banner](https://github.com/danneu/discourse_pervasive_banner)
+* [Email me](mailto:danrodneu@gmail.com) for questions/comments/corrections. :)
+* You can find the full plugin source on Github: [danneu/discourse_pervasive_banner](https://github.com/danneu/discourse_pervasive_banner)
 
 <script>
 var banner = document.createElement('div');
