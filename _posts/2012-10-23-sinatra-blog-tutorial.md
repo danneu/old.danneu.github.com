@@ -2,6 +2,7 @@
 layout: post
 title: "A Simple Blog with Sinatra and Active Record ( + some useful tools)"
 permalink: "posts/15-a-simple-blog-with-sinatra-and-active-record-some-useful-tools"
+comments: true
 ---
 
 # Objective
