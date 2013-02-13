@@ -191,7 +191,7 @@
   <span class="n">plugin</span><span class="o">.</span><span class="n">setup</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>Also I&#39;m pretty sure that creating an Engine is what will enable Rails to see our plugin&#39;s <code>vendor/</code> directory which is where we have our assets. That&#39;s how <code>DiscoursePluginRegistry</code> can just <code>require</code> them in the asset manifest loops without a File Not Found error.</p>
+<p>Creating an Engine is what will tell Rails to see our plugin&#39;s <code>vendor/</code> directory which is where we have our assets. In other words, our assets are added to the Rails app&#39;s load path. That&#39;s how <code>DiscoursePluginRegistry</code> can just <code>require</code> them in the asset manifest loops without a load error.</p>
 
 <p>(<a href="https://github.com/danneu/discourse_pervasive_banner/commit/75758a3c5fbfaa74e287d7a3e61a097a4bf04b65">View the commit</a>)</p>
 
