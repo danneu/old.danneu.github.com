@@ -175,7 +175,7 @@ def self.setup(plugin_class)
 end
 ~~~
 
-Also I'm pretty sure that creating an Engine is what will enable Rails to see our plugin's `vendor/` directory which is where we have our assets. That's how `DiscoursePluginRegistry` can just `require` them in the asset manifest loops without a File Not Found error.
+Creating an Engine is what will tell Rails to see our plugin's `vendor/` directory which is where we have our assets. In other words, our assets are added to the Rails app's load path. That's how `DiscoursePluginRegistry` can just `require` them in the asset manifest loops without a load error.
 
 ([View the commit](https://github.com/danneu/discourse_pervasive_banner/commit/75758a3c5fbfaa74e287d7a3e61a097a4bf04b65))
 
