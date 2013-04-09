@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Rails 3.2 + Markdown + Pygments + RedCarpet + Heroku"
-permalink: "posts/9-rails-3-2-markdown-pygments-redcarpet-heroku"
+permalink: "/posts/9-rails-3-2-markdown-pygments-redcarpet-heroku"
 comments: true
 ---
 

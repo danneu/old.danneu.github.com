@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Generating and submitting a sitemap.xml with Rails"
-permalink: "posts/13-generating-and-submitting-a-sitemap-xml-with-rails"
+permalink: "/posts/13-generating-and-submitting-a-sitemap-xml-with-rails"
 comments: true
 ---
 

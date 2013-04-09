@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Darkstrap.css: A Dark Theme for Twitter Bootstrap 2"
-permalink: "posts/4-darkstrap-css-a-dark-theme-for-twitter-bootstrap-2"
+permalink: "/posts/4-darkstrap-css-a-dark-theme-for-twitter-bootstrap-2"
 comments: true
 ---
 

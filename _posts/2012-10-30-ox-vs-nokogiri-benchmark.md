@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "XML Parsing Benchmark: Ox vs Nokogiri (SAX vs DOM traversal) "
-permalink: "posts/16-xml-parsing-benchmark-ox-vs-nokogiri-sax-vs-dom-traversal"
+permalink: "/posts/16-xml-parsing-benchmark-ox-vs-nokogiri-sax-vs-dom-traversal"
 comments: true
 ---
 

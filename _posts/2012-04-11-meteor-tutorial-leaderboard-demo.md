@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Meteor tutorial for fellow noobs: Adding features to the Leaderboard demo"
-permalink: "posts/6-meteor-tutorial-for-fellow-noobs-adding-features-to-the-leaderboard-demo"
+permalink: "/posts/6-meteor-tutorial-for-fellow-noobs-adding-features-to-the-leaderboard-demo"
 comments: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Scraping a blog with Anemone (Ruby web crawler) and MongoDB"
-permalink: "posts/8-scraping-a-blog-with-anemone-ruby-web-crawler-and-mongodb"
+permalink: "/posts/8-scraping-a-blog-with-anemone-ruby-web-crawler-and-mongodb"
 comments: true
 ---
 

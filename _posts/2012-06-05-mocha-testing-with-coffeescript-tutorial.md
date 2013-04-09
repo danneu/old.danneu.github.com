@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Setting up Mocha testing with Coffeescript, Node.js, and a Cakefile"
-permalink: "posts/14-setting-up-mocha-testing-with-coffeescript-node-js-and-a-cakefile"
+permalink: "/posts/14-setting-up-mocha-testing-with-coffeescript-node-js-and-a-cakefile"
 comments: true
 ---
 
